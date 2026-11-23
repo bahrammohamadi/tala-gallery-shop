@@ -1,0 +1,13 @@
+import type { MetadataRoute } from "next";
+
+export const dynamic = "force-static";
+
+export default function robots(): MetadataRoute.Robots {
+  const base = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+  return {
+    rules: [
+      { userAgent: "*", allow: "/", disallow: ["/admin", "/fa/admin", "/en/admin", "/fa/cart", "/en/cart", "/fa/checkout", "/en/checkout", "/fa/account", "/en/account"] },
+    ],
+    ...(base ? { sitemap: `${base}/sitemap.xml` } : {}),
+  };
+}
