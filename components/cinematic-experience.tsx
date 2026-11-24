@@ -110,7 +110,7 @@ export function CinematicExperience({ locale }: { locale: Locale }) {
             mode="story"
             progressRef={motionRef}
             anchorX={anchorX}
-            label={isFa ? "مدل سه‌بعدی مفهومی حلقه، با حرکت دوربین وابسته به پیمایش" : "Concept 3D ring with a scroll-driven camera path"}
+            label={isFa ? "مدل سه‌بعدی مفهومی دو‌رنگ با تاج گلبرگی و حرکت دوربین وابسته به پیمایش" : "Two-tone petal-set concept ring with a scroll-driven camera path"}
           />
         </div>
         <div className="cinema-vignette" aria-hidden="true" />
@@ -161,7 +161,7 @@ export function CinematicExperience({ locale }: { locale: Locale }) {
           <div className="product-reveal__topline"><span className="eyebrow__dot" />TALA / {isFa ? "نمونه‌ی مفهومی" : "CONCEPT STUDY"}</div>
           <p className="product-reveal__code">{product.modelCode}</p>
           <h2>{product.name[locale]}</h2>
-          <p className="product-reveal__description">{isFa ? "حلقه‌ی سولیتِر · مدل نمایشی" : "Solitaire ring · demonstration model"}</p>
+          <p className="product-reveal__description">{isFa ? "تاجِ گلبرگی دو‌رنگ · مدل مفهومی" : "Two-tone petal setting · concept model"}</p>
           <div className="product-reveal__specs">
             <div><span>{isFa ? "عیار" : "PURITY"}</span><b>{isFa ? "پس از تأیید" : "To be confirmed"}</b></div>
             <div><span>{isFa ? "وزن" : "WEIGHT"}</span><b>{isFa ? "پس از تأیید" : "To be confirmed"}</b></div>

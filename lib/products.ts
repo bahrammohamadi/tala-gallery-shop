@@ -80,18 +80,18 @@ export const categories: Array<{
 export const products: Product[] = [
   {
     slug: "solitaire-01",
-    name: { fa: "سولیتِر شماره‌ی ۰۱", en: "Solitaire No. 01" },
-    subtitle: { fa: "حلقه‌ی مفهومی · مدل سه‌بعدی", en: "Concept ring · 3D study" },
+    name: { fa: "شکوفه‌ی نور شماره‌ی ۰۱", en: "Petal Pavé No. 01" },
+    subtitle: { fa: "حلقه‌ی دو‌رنگ مفهومی · مدل سه‌بعدی", en: "Two-tone ring concept · 3D study" },
     category: "rings",
     artwork: "ring",
     modelCode: "CONCEPT-TL-01",
     description: {
-      fa: "مطالعه‌ای سه‌بعدی از یک حلقه‌ی تک‌نگین؛ طراحی و مشخصات این نمونه مفهومی است و پیش از عرضه باید با مدل CAD و جزئیات واقعی کارگاه جایگزین شود.",
-      en: "A 3D study of a solitaire ring. This concept is not a production design and must be replaced with workshop-approved CAD and specifications before release.",
+      fa: "اتودی سه‌بعدی از حلقه‌ای دو‌رنگ با تاجی گلبرگی، نگین مرکزیِ نمایشی و ردیف‌های کناریِ سنگ‌نما. فرم، متریال و جزئیات این مدل صرفاً مفهومی‌اند و مشخصات محصول واقعی را نشان نمی‌دهند.",
+      en: "A two-tone 3D concept with a sculpted petal gallery, a demonstration center stone and pavé-like shoulders. Its form and materials are visual studies, not verified product specifications.",
     },
     story: {
-      fa: "در این اتود، خطِ حلقه به سوی نقطه‌ای از نور بالا می‌رود. حرکت دوربین برای دیدن تناسب و پرداخت مدل نوشته شده است؛ نه برای ادعای جزئیات ساختِ یک محصول واقعی.",
-      en: "In this study, the band rises towards a single point of light. The authored camera path reveals the model's proportions and finish; it does not represent verified production details.",
+      fa: "بندِ دو‌رنگ به‌سوی تاجی گلبرگی و نگینی بزرگ می‌پیچد؛ ردیف‌های کناری، مسیر نور را تا شانه‌های حلقه ادامه می‌دهند. این اتود برای کاوشِ فرم ساخته شده، نه به‌عنوان طرحِ تأییدشده‌ی کارگاه.",
+      en: "A two-tone band rises into a petal-like gallery and a generous center stone. Pavé-like shoulders carry the light back along the shank. This is a form study, not workshop-approved CAD.",
     },
     specs: {
       purityPerMille: null,

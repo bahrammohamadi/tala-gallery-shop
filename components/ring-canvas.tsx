@@ -47,28 +47,23 @@ function storyFrame(progress: number, anchorX: number, mobile: boolean) {
   };
 }
 
-function createBandGeometry() {
-  const around = 160;
-  const section = 32;
+function createBandGeometry(majorRadius = 0.83, profileScale = 1) {
+  const around = 192;
+  const section = 40;
   const positions: number[] = [];
   const indices: number[] = [];
-  const majorRadius = 0.83;
 
   for (let i = 0; i <= around; i += 1) {
     const theta = (i / around) * Math.PI * 2;
     const topNarrowing = Math.exp(-Math.pow((Math.sin(theta) - 1) / 0.31, 2));
     const lowerFullness = Math.exp(-Math.pow((Math.sin(theta) + 1) / 0.7, 2));
-    const radialHalf = 0.112 - topNarrowing * 0.024 + lowerFullness * 0.006;
-    const depthHalf = 0.055 - topNarrowing * 0.008;
+    const radialHalf = (0.112 - topNarrowing * 0.024 + lowerFullness * 0.006) * profileScale;
+    const depthHalf = (0.055 - topNarrowing * 0.008) * profileScale;
 
     for (let j = 0; j <= section; j += 1) {
       const phi = (j / section) * Math.PI * 2;
       const ringRadius = majorRadius + Math.sin(phi) * radialHalf;
-      positions.push(
-        Math.cos(theta) * ringRadius,
-        Math.sin(theta) * ringRadius,
-        Math.cos(phi) * depthHalf,
-      );
+      positions.push(Math.cos(theta) * ringRadius, Math.sin(theta) * ringRadius, Math.cos(phi) * depthHalf);
     }
   }
 
@@ -90,13 +85,14 @@ function createBandGeometry() {
 }
 
 function createDiamondGeometry() {
-  const slices = 16;
+  const slices = 24;
   const profile = [
-    { radius: 0.025, z: -0.19 },
-    { radius: 0.285, z: -0.025 },
-    { radius: 0.285, z: 0.015 },
-    { radius: 0.205, z: 0.105 },
-    { radius: 0.12, z: 0.16 },
+    { radius: 0.018, z: -0.205 },
+    { radius: 0.285, z: -0.055 },
+    { radius: 0.34, z: -0.012 },
+    { radius: 0.315, z: 0.025 },
+    { radius: 0.255, z: 0.09 },
+    { radius: 0.17, z: 0.16 },
   ];
   const positions: number[] = [];
   const indices: number[] = [];
@@ -121,16 +117,18 @@ function createDiamondGeometry() {
 
   const tableIndex = (profile.length - 1) * slices;
   const centerIndex = positions.length / 3;
-  positions.push(0, 0, profile[profile.length - 1].z + 0.004);
+  positions.push(0, 0, profile[profile.length - 1].z + 0.002);
   for (let i = 0; i < slices; i += 1) {
     indices.push(tableIndex + i, tableIndex + ((i + 1) % slices), centerIndex);
   }
 
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-  geometry.setIndex(indices);
-  geometry.computeVertexNormals();
-  return geometry;
+  const indexed = new THREE.BufferGeometry();
+  indexed.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  indexed.setIndex(indices);
+  const faceted = indexed.toNonIndexed();
+  indexed.dispose();
+  faceted.computeVertexNormals();
+  return faceted;
 }
 
 function SupportRod({ start, end, radius = 0.022 }: { start: [number, number, number]; end: [number, number, number]; radius?: number }) {
@@ -148,7 +146,26 @@ function SupportRod({ start, end, radius = 0.022 }: { start: [number, number, nu
   return (
     <mesh position={center} quaternion={quaternion} castShadow>
       <cylinderGeometry args={[radius * 0.82, radius, length, 12]} />
-      <meshStandardMaterial color="#c7a56a" metalness={0.97} roughness={0.21} />
+      <meshStandardMaterial color="#e2e1dc" metalness={0.97} roughness={0.17} />
+    </mesh>
+  );
+}
+
+function GalleryClaw({ angle }: { angle: number }) {
+  const geometry = useMemo(() => {
+    const point = (radius: number, z: number) => new THREE.Vector3(Math.cos(angle) * radius, 1.105 + Math.sin(angle) * radius, z);
+    const curve = new THREE.CatmullRomCurve3([
+      point(0.33, -0.035),
+      point(0.32, 0.025),
+      point(0.275, 0.1),
+      point(0.215, 0.165),
+    ]);
+    return new THREE.TubeGeometry(curve, 22, 0.023, 8, false);
+  }, [angle]);
+
+  return (
+    <mesh geometry={geometry} castShadow>
+      <meshStandardMaterial color="#dbb976" metalness={0.98} roughness={0.16} />
     </mesh>
   );
 }
@@ -157,6 +174,15 @@ function RingModel({ mode, progressRef, anchorX }: { mode: RingCanvasProps["mode
   const group = useRef<THREE.Group>(null);
   const bandGeometry = useMemo(createBandGeometry, []);
   const diamondGeometry = useMemo(createDiamondGeometry, []);
+  const galleryAngles = useMemo(() => Array.from({ length: 6 }, (_, index) => (index / 6) * Math.PI * 2), []);
+  const paveStones = useMemo(() => {
+    const points: Array<{ x: number; y: number; angle: number }> = [];
+    for (const degrees of [18, 25, 32, 39, 46, 53, 60, 67]) {
+      const radians = ((180 - degrees) * Math.PI) / 180;
+      points.push({ x: Math.cos(radians) * 0.855, y: Math.sin(radians) * 0.855, angle: radians });
+    }
+    return points;
+  }, []);
 
   useFrame(({ size }) => {
     if (!group.current || mode !== "story" || !progressRef) return;
@@ -168,44 +194,58 @@ function RingModel({ mode, progressRef, anchorX }: { mode: RingCanvasProps["mode
     group.current.rotation.x = Math.sin(orbit * Math.PI) * 0.035 * cameraScale;
   });
 
-  const prongs: Array<[number, number, number]> = [
-    [-0.21, 1.22, 0.12], [0.21, 1.22, 0.12],
-    [-0.21, 0.99, 0.12], [0.21, 0.99, 0.12],
-  ];
-
   return (
     <group ref={group} position={[mode === "story" ? anchorX : 0, 0, 0]}>
       <mesh geometry={bandGeometry} castShadow receiveShadow>
-        <meshPhysicalMaterial color="#c7a56a" metalness={1} roughness={0.2} clearcoat={0.9} clearcoatRoughness={0.14} envMapIntensity={1.25} />
+        <meshPhysicalMaterial color="#deded9" metalness={0.97} roughness={0.17} clearcoat={0.95} clearcoatRoughness={0.11} envMapIntensity={1.45} />
       </mesh>
-      <SupportRod start={[-0.42, 0.73, 0]} end={[-0.2, 1.02, 0.025]} />
-      <SupportRod start={[0.42, 0.73, 0]} end={[0.2, 1.02, 0.025]} />
-      <mesh position={[0, 1.105, -0.015]} rotation={[0, 0, 0]} castShadow>
-        <torusGeometry args={[0.292, 0.027, 12, 64]} />
-        <meshStandardMaterial color="#d8b677" metalness={1} roughness={0.17} />
+      <mesh position={[0, 0, 0.032]}>
+        <torusGeometry args={[0.739, 0.013, 8, 160]} />
+        <meshStandardMaterial color="#c7a56a" metalness={1} roughness={0.18} />
       </mesh>
-      <mesh position={[0, 1.105, 0.09]} castShadow>
-        <torusGeometry args={[0.252, 0.014, 10, 64]} />
-        <meshStandardMaterial color="#e5c58c" metalness={1} roughness={0.16} />
+      <mesh position={[0, 0, -0.035]}>
+        <torusGeometry args={[0.744, 0.014, 8, 160]} />
+        <meshStandardMaterial color="#c7a56a" metalness={1} roughness={0.21} />
       </mesh>
-      <mesh geometry={diamondGeometry} position={[0, 1.105, 0.092]} castShadow>
-        <meshPhysicalMaterial color="#fff8e9" metalness={0.02} roughness={0.045} transmission={0.18} thickness={0.42} ior={2.25} clearcoat={1} clearcoatRoughness={0.035} side={THREE.DoubleSide} envMapIntensity={1.7} />
-      </mesh>
-      {prongs.map(([x, y, z], index) => (
-        <group key={index} position={[x, y, z]}>
-          <mesh rotation={[Math.PI / 2, 0, 0]} castShadow>
-            <cylinderGeometry args={[0.018, 0.026, 0.16, 10]} />
-            <meshStandardMaterial color="#dfbd82" metalness={1} roughness={0.2} />
+      <SupportRod start={[-0.43, 0.71, -0.005]} end={[-0.235, 1.005, 0.015]} radius={0.027} />
+      <SupportRod start={[0.43, 0.71, -0.005]} end={[0.235, 1.005, 0.015]} radius={0.027} />
+
+      {paveStones.map((stone, index) => (
+        <group key={index} position={[stone.x, stone.y, 0.055]} rotation={[0, 0, stone.angle + Math.PI / 2]}>
+          <mesh castShadow>
+            <icosahedronGeometry args={[0.033, 1]} />
+            <meshPhysicalMaterial color="#f7f7f4" metalness={0.03} roughness={0.075} transmission={0.12} thickness={0.08} ior={2.05} clearcoat={1} clearcoatRoughness={0.04} />
           </mesh>
-          <mesh position={[0, 0.01, 0.078]} castShadow>
-            <sphereGeometry args={[0.026, 12, 10]} />
-            <meshStandardMaterial color="#ebcf9a" metalness={1} roughness={0.18} />
+          <mesh position={[0, 0, -0.014]}>
+            <torusGeometry args={[0.036, 0.0045, 6, 20]} />
+            <meshStandardMaterial color="#f1f0eb" metalness={0.95} roughness={0.18} />
           </mesh>
         </group>
       ))}
-      <mesh position={[0, 0.975, 0.055]} rotation={[0, 0, Math.PI / 2]} castShadow>
-        <torusGeometry args={[0.085, 0.017, 8, 32, Math.PI]} />
-        <meshStandardMaterial color="#c7a56a" metalness={1} roughness={0.2} />
+
+      <mesh position={[0, 1.105, 0.018]} castShadow>
+        <torusGeometry args={[0.334, 0.026, 12, 80]} />
+        <meshStandardMaterial color="#d8b677" metalness={1} roughness={0.16} />
+      </mesh>
+      <mesh position={[0, 1.105, -0.015]} castShadow>
+        <torusGeometry args={[0.285, 0.021, 10, 64]} />
+        <meshStandardMaterial color="#b98c4c" metalness={1} roughness={0.2} />
+      </mesh>
+      {galleryAngles.map((angle) => (
+        <mesh
+          key={`petal-${angle}`}
+          position={[Math.cos(angle) * 0.315, 1.105 + Math.sin(angle) * 0.315, 0.07]}
+          rotation={[0, 0, angle + Math.PI / 2]}
+          scale={[0.061, 0.137, 0.026]}
+          castShadow
+        >
+          <sphereGeometry args={[1, 20, 12]} />
+          <meshStandardMaterial color="#d6b16d" metalness={0.98} roughness={0.18} />
+        </mesh>
+      ))}
+      {galleryAngles.map((angle) => <GalleryClaw key={`claw-${angle}`} angle={angle} />)}
+      <mesh geometry={diamondGeometry} position={[0, 1.105, 0.085]} castShadow>
+        <meshPhysicalMaterial color="#fffdf8" metalness={0.015} roughness={0.035} transmission={0.22} thickness={0.48} ior={2.22} clearcoat={1} clearcoatRoughness={0.025} side={THREE.DoubleSide} flatShading envMapIntensity={1.9} />
       </mesh>
     </group>
   );
@@ -268,7 +308,7 @@ function Scene({ mode, progressRef, anchorX, controlsRef }: RingCanvasProps) {
 export default function RingCanvas({ mode, progressRef, anchorX = 0, controlsRef, label }: RingCanvasProps) {
   const cameraPosition: [number, number, number] = mode === "story" ? [anchorX, 0.16, 5.8] : [0, 0.25, 5.4];
   return (
-    <div className="ring-canvas" role="img" aria-label={label ?? "A concept solitaire ring in a dark studio"}>
+    <div className="ring-canvas" role="img" aria-label={label ?? "A two-tone concept ring with a sculpted petal setting"}>
       <Canvas
         camera={{ position: cameraPosition, fov: 32, near: 0.1, far: 60 }}
         dpr={[1, 1.5]}

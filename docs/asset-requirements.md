@@ -2,7 +2,7 @@
 
 ## Current demo asset disclosure
 
-The repository arrived without product images or 3D models. The current hero is a procedural Three.js **concept solitaire** built from parametric ring geometry, a faceted demonstration stone, PBR metal material and procedural environment lighting. It is a functional camera/scroll study, not a photographed or workshop-approved product. It does **not** claim 18K purity, a real diamond, a verified finish, a SKU, a weight, a certificate or availability. The catalog uses clearly labeled concept studies and non-production concept codes.
+The repository arrived without product images or 3D models. The current hero is a procedural Three.js **two-tone petal-setting concept ring** with one pavé-style shoulder, a faceted demonstration center stone, PBR metal materials and procedural environment lighting. It is a functional camera/scroll study, not a photographed or workshop-approved product. Its sculptural gold-and-silver appearance is a visual concept only: it does **not** claim a specific alloy, purity, a real diamond, a verified finish, a SKU, a weight, a certificate or availability. The catalog uses clearly labeled concept studies and non-production concept codes.
 
 The collection archive uses original inline vector studies as low-weight editorial placeholders; they are not product photography. Replace them with approved media before product publication.
 

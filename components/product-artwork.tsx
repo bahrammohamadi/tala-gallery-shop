@@ -13,18 +13,29 @@ export function ProductArtwork({ kind, label, large = false }: { kind: ArtworkKi
             <stop offset="0.45" stopColor="#c7a56a" />
             <stop offset="1" stopColor="#8a6435" />
           </linearGradient>
+          <linearGradient id={`silver-${id}`} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#fffdf7" />
+            <stop offset="0.48" stopColor="#c5c7c9" />
+            <stop offset="1" stopColor="#858a90" />
+          </linearGradient>
           <radialGradient id={`stone-${id}`} cx="0" cy="0" r="1" gradientTransform="translate(171 118) rotate(90) scale(66)">
             <stop stopColor="#f7f0e4" stopOpacity="0.92" />
             <stop offset="0.46" stopColor="#c8bdab" stopOpacity="0.42" />
             <stop offset="1" stopColor="#c7a56a" stopOpacity="0.05" />
           </radialGradient>
         </defs>
-        {kind === "ring" && <g stroke={`url(#foil-${id})`} strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round">
-          <ellipse cx="178" cy="177" rx="63" ry="74" transform="rotate(-17 178 177)" />
-          <path d="M135 111c17-10 41-14 61-10" opacity=".58" />
-          <path d="M163 92l15-23 15 23-15 15-15-15Z" fill={`url(#stone-${id})`} strokeWidth="2.5" />
-          <path d="M167 91h22M178 70v37" strokeWidth="1.2" opacity=".85" />
-          <path d="M161 101c8 5 25 5 34 0" strokeWidth="2.3" />
+        {kind === "ring" && <g strokeLinecap="round" strokeLinejoin="round">
+          <ellipse cx="178" cy="177" rx="67" ry="78" transform="rotate(-17 178 177)" stroke={`url(#silver-${id})`} strokeWidth="7" />
+          <ellipse cx="178" cy="177" rx="59" ry="70" transform="rotate(-17 178 177)" stroke={`url(#foil-${id})`} strokeWidth="2.4" opacity=".9" />
+          <path d="M138 113c10-12 23-20 38-23m25 7c9 4 17 10 24 18" stroke={`url(#silver-${id})`} strokeWidth="7" />
+          <path d="M141 115c11-15 22-20 35-22m26 7c8 4 14 9 20 15" stroke={`url(#foil-${id})`} strokeWidth="2.2" />
+          <path d="M158 91c1-11 9-18 20-18 10 0 18 7 20 18m-40 5c3 9 10 14 20 15 10-1 17-6 20-15" stroke={`url(#foil-${id})`} strokeWidth="4" />
+          <path d="M157 88l8-13m25 0 8 13m-41 12-9-8m47 0-9 8" stroke={`url(#foil-${id})`} strokeWidth="3.4" />
+          <path d="M158 84l12-13 21 1 13 13-8 18-18 12-19-12-8-18Z" fill={`url(#stone-${id})`} stroke={`url(#silver-${id})`} strokeWidth="2.8" />
+          <path d="M170 72l-4 29m25-29 5 29m-39-17 39 1m-30 15 12 15 13-15" stroke="#fffdf8" strokeWidth="1.3" opacity=".9" />
+          <g fill={`url(#stone-${id})`} stroke={`url(#silver-${id})`} strokeWidth="1.4">
+            <circle cx="126" cy="132" r="5.4"/><circle cx="121" cy="151" r="5.4"/><circle cx="120" cy="170" r="5.4"/><circle cx="124" cy="188" r="5.2"/><circle cx="132" cy="204" r="4.8"/>
+          </g>
         </g>}
         {kind === "necklace" && <g stroke={`url(#foil-${id})`} strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M94 67c4 76 28 126 86 146 58-20 82-70 86-146" />
