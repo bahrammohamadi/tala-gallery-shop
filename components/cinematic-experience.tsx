@@ -110,7 +110,7 @@ export function CinematicExperience({ locale }: { locale: Locale }) {
             mode="story"
             progressRef={motionRef}
             anchorX={anchorX}
-            label={isFa ? "مدل سه‌بعدی مفهومی دو‌رنگ با تاج گلبرگی و حرکت دوربین وابسته به پیمایش" : "Two-tone petal-set concept ring with a scroll-driven camera path"}
+            label={isFa ? "مدل سه‌بعدی مفهومیِ دو‌رنگ با تاج گلبرگیِ برجسته، نگین مرکزی و یک شانه‌ی سنگ‌نمای ریزدانه؛ با حرکت دوربین وابسته به پیمایش" : "Scroll-driven 3D concept: a two-tone ring with a raised petal gallery, faceted center stone and one pavé-style shoulder"}
           />
         </div>
         <div className="cinema-vignette" aria-hidden="true" />

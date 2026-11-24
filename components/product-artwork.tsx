@@ -23,18 +23,25 @@ export function ProductArtwork({ kind, label, large = false }: { kind: ArtworkKi
             <stop offset="0.46" stopColor="#c8bdab" stopOpacity="0.42" />
             <stop offset="1" stopColor="#c7a56a" stopOpacity="0.05" />
           </radialGradient>
+          <radialGradient id={`diamond-${id}`} cx="0" cy="0" r="1" gradientTransform="translate(180 82) rotate(90) scale(37)">
+            <stop stopColor="#fffefb" stopOpacity="0.96" />
+            <stop offset="0.48" stopColor="#d9e0e1" stopOpacity="0.65" />
+            <stop offset="1" stopColor="#c7a56a" stopOpacity="0.08" />
+          </radialGradient>
         </defs>
         {kind === "ring" && <g strokeLinecap="round" strokeLinejoin="round">
-          <ellipse cx="178" cy="177" rx="67" ry="78" transform="rotate(-17 178 177)" stroke={`url(#silver-${id})`} strokeWidth="7" />
-          <ellipse cx="178" cy="177" rx="59" ry="70" transform="rotate(-17 178 177)" stroke={`url(#foil-${id})`} strokeWidth="2.4" opacity=".9" />
-          <path d="M138 113c10-12 23-20 38-23m25 7c9 4 17 10 24 18" stroke={`url(#silver-${id})`} strokeWidth="7" />
-          <path d="M141 115c11-15 22-20 35-22m26 7c8 4 14 9 20 15" stroke={`url(#foil-${id})`} strokeWidth="2.2" />
-          <path d="M158 91c1-11 9-18 20-18 10 0 18 7 20 18m-40 5c3 9 10 14 20 15 10-1 17-6 20-15" stroke={`url(#foil-${id})`} strokeWidth="4" />
-          <path d="M157 88l8-13m25 0 8 13m-41 12-9-8m47 0-9 8" stroke={`url(#foil-${id})`} strokeWidth="3.4" />
-          <path d="M158 84l12-13 21 1 13 13-8 18-18 12-19-12-8-18Z" fill={`url(#stone-${id})`} stroke={`url(#silver-${id})`} strokeWidth="2.8" />
-          <path d="M170 72l-4 29m25-29 5 29m-39-17 39 1m-30 15 12 15 13-15" stroke="#fffdf8" strokeWidth="1.3" opacity=".9" />
-          <g fill={`url(#stone-${id})`} stroke={`url(#silver-${id})`} strokeWidth="1.4">
-            <circle cx="126" cy="132" r="5.4"/><circle cx="121" cy="151" r="5.4"/><circle cx="120" cy="170" r="5.4"/><circle cx="124" cy="188" r="5.2"/><circle cx="132" cy="204" r="4.8"/>
+          <ellipse cx="180" cy="183" rx="69" ry="83" transform="rotate(-17 180 183)" stroke={`url(#silver-${id})`} strokeWidth="9" />
+          <ellipse cx="180" cy="183" rx="61" ry="75" transform="rotate(-17 180 183)" stroke={`url(#foil-${id})`} strokeWidth="3" opacity=".95" />
+          <path d="M137 113c-17 17-28 43-28 68 0 12 3 23 8 34" stroke={`url(#silver-${id})`} strokeWidth="11" />
+          <path d="M141 117c-14 18-23 41-23 62 0 10 2 19 5 28" stroke={`url(#foil-${id})`} strokeWidth="2.4" />
+          <path d="M220 109c25 18 39 45 38 72-1 10-3 20-7 29" stroke={`url(#silver-${id})`} strokeWidth="10" />
+          <path d="M153 108c-8 9-14 17-20 27m74-27c8 9 14 17 20 27" stroke={`url(#foil-${id})`} strokeWidth="4.3" />
+          <path d="M157 107c3 11 11 20 23 25 12-5 20-14 23-25" stroke={`url(#foil-${id})`} strokeWidth="4.4" />
+          <path d="M155 73c-5-10-1-19 7-25 5 8 6 15 1 24m42 1c5-10 1-19-7-25-5 8-6 15-1 24M147 83c-11-4-17 2-16 12 7 0 12-3 16-9m66-3c11-4 17 2 16 12-7 0-12-3-16-9m-50 23c-2 10 4 17 13 19 4-6 5-12 1-19m27 0c2 10-4 17-13 19-4-6-5-12-1-19" fill="none" stroke={`url(#foil-${id})`} strokeWidth="4.4" />
+          <path d="M180 47l16 5 13 13 6 17-6 17-13 12-16 5-16-5-13-12-6-17 6-17 13-13 16-5Z" fill={`url(#diamond-${id})`} stroke={`url(#silver-${id})`} strokeWidth="2.6" />
+          <path d="M180 48l-7 28m23-24-6 25m25 5-28-2m-34 0 29 2m-29 0 20 22m23-22-7 22m-9-25v38m-13-39-7 25m34-25 7 25" stroke="#fffdf8" strokeWidth="1.25" opacity=".88" />
+          <g fill="#fffdf8" stroke={`url(#silver-${id})`} strokeWidth="1.3">
+            <circle cx="132" cy="125" r="4.1"/><circle cx="126" cy="136" r="4.1"/><circle cx="120" cy="148" r="4.1"/><circle cx="116" cy="160" r="4.1"/><circle cx="114" cy="172" r="4.1"/><circle cx="114" cy="184" r="4.1"/><circle cx="117" cy="196" r="4"/><circle cx="122" cy="207" r="3.8"/>
           </g>
         </g>}
         {kind === "necklace" && <g stroke={`url(#foil-${id})`} strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round">

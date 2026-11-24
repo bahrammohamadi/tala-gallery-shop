@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/vazirmatn/wght.css";
+import "@fontsource-variable/estedad/wght.css";
 import "@fontsource-variable/manrope/wght.css";
 import "@fontsource/cormorant-garamond/400.css";
 import "@fontsource/cormorant-garamond/500.css";

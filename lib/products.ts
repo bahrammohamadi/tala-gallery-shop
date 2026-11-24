@@ -86,12 +86,13 @@ export const products: Product[] = [
     artwork: "ring",
     modelCode: "CONCEPT-TL-01",
     description: {
-      fa: "اتودی سه‌بعدی از حلقه‌ای دو‌رنگ با تاجی گلبرگی، نگین مرکزیِ نمایشی و ردیف‌های کناریِ سنگ‌نما. فرم، متریال و جزئیات این مدل صرفاً مفهومی‌اند و مشخصات محصول واقعی را نشان نمی‌دهند.",
-      en: "A two-tone 3D concept with a sculpted petal gallery, a demonstration center stone and pavé-like shoulders. Its form and materials are visual studies, not verified product specifications.",
+      fa: "اتودی سه‌بعدی از حلقه‌ای دو‌رنگ با بندِ نقره‌ای‌نما، جزئیات داخلیِ طلایی‌نما، تاجی گلبرگی و نگین مرکزیِ نمایشی؛ روی یک شانه ردیفی از سنگ‌نما دیده می‌شود. این فرم و متریال صرفاً مفهومی‌اند و مشخصات محصول واقعی را نشان نمی‌دهند.",
+      en: "A two-tone 3D concept: silver-tone shank, gold-tone inner detail, a sculpted petal gallery and demonstration center stone, with one pavé-style shoulder. These are visual studies, not verified product specifications.",
     },
     story: {
-      fa: "بندِ دو‌رنگ به‌سوی تاجی گلبرگی و نگینی بزرگ می‌پیچد؛ ردیف‌های کناری، مسیر نور را تا شانه‌های حلقه ادامه می‌دهند. این اتود برای کاوشِ فرم ساخته شده، نه به‌عنوان طرحِ تأییدشده‌ی کارگاه.",
-      en: "A two-tone band rises into a petal-like gallery and a generous center stone. Pavé-like shoulders carry the light back along the shank. This is a form study, not workshop-approved CAD.",
+      fa: "یک شانه‌ی سنگ‌نما و شانه‌ی دیگرِ ساده، به تاجی گلبرگی و نگینی بزرگ می‌رسند؛ جزئیات داخلیِ طلایی‌نما، تضادِ دو‌رنگ را کامل می‌کند. این اتود برای کاوشِ فرم ساخته شده، نه به‌عنوان طرحِ تأییدشده‌ی کارگاه.",
+      en: "One pavé-style shoulder leads to a raised petal gallery and generous center stone, while the opposite shoulder stays smooth. A gold-tone inner detail completes the contrast. This is a form study, not workshop-approved CAD.",
+
     },
     specs: {
       purityPerMille: null,

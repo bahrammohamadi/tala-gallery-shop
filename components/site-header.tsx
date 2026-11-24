@@ -87,11 +87,11 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         </div>
         <nav aria-label={locale === "fa" ? "ناوبری موبایل" : "Mobile navigation"}>
           {menuLinks.map((item, index) => (
-            <Link href={item.href} key={item.href} onClick={() => setOpen(false)}>
+            <Link href={item.href} key={item.href} onClick={() => setOpen(false)} style={{ "--menu-index": index } as React.CSSProperties}>
               <span className="mobile-menu__index">0{index + 1}</span><span>{item.label}</span><Arrow size={18} strokeWidth={1.2} />
             </Link>
           ))}
-          <Link href={`/${locale}/cart`} onClick={() => setOpen(false)}>
+          <Link href={`/${locale}/cart`} onClick={() => setOpen(false)} style={{ "--menu-index": menuLinks.length } as React.CSSProperties}>
             <span className="mobile-menu__index">06</span><span>{copy.cart}</span><Arrow size={18} strokeWidth={1.2} />
           </Link>
         </nav>

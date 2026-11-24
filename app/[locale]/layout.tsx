@@ -4,6 +4,7 @@ import { CartProvider } from "@/components/cart-provider";
 import { LocaleDocument } from "@/components/locale-document";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ScrollEffects } from "@/components/scroll-effects";
 import { isLocale, type Locale } from "@/lib/i18n";
 
 export function generateStaticParams() {
@@ -42,6 +43,7 @@ export default async function LocaleLayout({
   return (
     <div className={`locale-shell locale-${locale}`} dir={locale === "fa" ? "rtl" : "ltr"} lang={locale}>
       <LocaleDocument locale={locale} />
+      <ScrollEffects />
       <CartProvider locale={locale}>
         <SiteHeader locale={locale} />
         <main id="main-content">{children}</main>

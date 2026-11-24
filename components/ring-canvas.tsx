@@ -85,14 +85,16 @@ function createBandGeometry(majorRadius = 0.83, profileScale = 1) {
 }
 
 function createDiamondGeometry() {
-  const slices = 24;
+  const slices = 32;
   const profile = [
-    { radius: 0.018, z: -0.205 },
-    { radius: 0.285, z: -0.055 },
-    { radius: 0.34, z: -0.012 },
-    { radius: 0.315, z: 0.025 },
-    { radius: 0.255, z: 0.09 },
-    { radius: 0.17, z: 0.16 },
+    { radius: 0.018, z: -0.235 },
+    { radius: 0.135, z: -0.17 },
+    { radius: 0.275, z: -0.085 },
+    { radius: 0.35, z: -0.018 },
+    { radius: 0.365, z: -0.005 },
+    { radius: 0.34, z: 0.037 },
+    { radius: 0.28, z: 0.098 },
+    { radius: 0.19, z: 0.15 },
   ];
   const positions: number[] = [];
   const indices: number[] = [];
@@ -146,7 +148,7 @@ function SupportRod({ start, end, radius = 0.022 }: { start: [number, number, nu
   return (
     <mesh position={center} quaternion={quaternion} castShadow>
       <cylinderGeometry args={[radius * 0.82, radius, length, 12]} />
-      <meshStandardMaterial color="#e2e1dc" metalness={0.97} roughness={0.17} />
+      <meshStandardMaterial color="#d2ad68" metalness={0.98} roughness={0.16} />
     </mesh>
   );
 }
@@ -174,12 +176,15 @@ function RingModel({ mode, progressRef, anchorX }: { mode: RingCanvasProps["mode
   const group = useRef<THREE.Group>(null);
   const bandGeometry = useMemo(createBandGeometry, []);
   const diamondGeometry = useMemo(createDiamondGeometry, []);
-  const galleryAngles = useMemo(() => Array.from({ length: 6 }, (_, index) => (index / 6) * Math.PI * 2), []);
+  const galleryAngles = useMemo(() => Array.from({ length: 8 }, (_, index) => (index / 8) * Math.PI * 2), []);
   const paveStones = useMemo(() => {
-    const points: Array<{ x: number; y: number; angle: number }> = [];
-    for (const degrees of [18, 25, 32, 39, 46, 53, 60, 67]) {
+    const points: Array<{ x: number; y: number; angle: number; size: number }> = [];
+    const count = 13;
+    for (let index = 0; index < count; index += 1) {
+      const degrees = 20 + (53 * index) / (count - 1);
       const radians = ((180 - degrees) * Math.PI) / 180;
-      points.push({ x: Math.cos(radians) * 0.855, y: Math.sin(radians) * 0.855, angle: radians });
+      const radius = 0.861 + Math.sin((index / (count - 1)) * Math.PI) * 0.005;
+      points.push({ x: Math.cos(radians) * radius, y: Math.sin(radians) * radius, angle: radians, size: index > 9 ? 0.023 : 0.025 });
     }
     return points;
   }, []);
@@ -190,61 +195,53 @@ function RingModel({ mode, progressRef, anchorX }: { mode: RingCanvasProps["mode
     const orbit = THREE.MathUtils.smoothstep(p, 0.66, 0.83);
     const returnToFront = THREE.MathUtils.smoothstep(p, 0.83, 0.92);
     const cameraScale = size.width < 760 ? 0.58 : 1;
-    group.current.rotation.y = (orbit - returnToFront) * 0.16 * cameraScale;
-    group.current.rotation.x = Math.sin(orbit * Math.PI) * 0.035 * cameraScale;
+    group.current.rotation.y = 0.24 + (orbit - returnToFront) * 0.34 * cameraScale;
+    group.current.rotation.x = Math.sin(orbit * Math.PI) * 0.05 * cameraScale;
   });
 
   return (
-    <group ref={group} position={[mode === "story" ? anchorX : 0, 0, 0]}>
+    <group ref={group} position={[mode === "story" ? anchorX : 0, 0, 0]} rotation={[0, 0.24, 0]}>
       <mesh geometry={bandGeometry} castShadow receiveShadow>
         <meshPhysicalMaterial color="#deded9" metalness={0.97} roughness={0.17} clearcoat={0.95} clearcoatRoughness={0.11} envMapIntensity={1.45} />
       </mesh>
-      <mesh position={[0, 0, 0.032]}>
-        <torusGeometry args={[0.739, 0.013, 8, 160]} />
-        <meshStandardMaterial color="#c7a56a" metalness={1} roughness={0.18} />
-      </mesh>
-      <mesh position={[0, 0, -0.035]}>
-        <torusGeometry args={[0.744, 0.014, 8, 160]} />
-        <meshStandardMaterial color="#c7a56a" metalness={1} roughness={0.21} />
+      <mesh>
+        <torusGeometry args={[0.735, 0.021, 10, 192]} />
+        <meshStandardMaterial color="#c7a56a" metalness={1} roughness={0.2} />
       </mesh>
       <SupportRod start={[-0.43, 0.71, -0.005]} end={[-0.235, 1.005, 0.015]} radius={0.027} />
       <SupportRod start={[0.43, 0.71, -0.005]} end={[0.235, 1.005, 0.015]} radius={0.027} />
 
       {paveStones.map((stone, index) => (
-        <group key={index} position={[stone.x, stone.y, 0.055]} rotation={[0, 0, stone.angle + Math.PI / 2]}>
+        <group key={index} position={[stone.x, stone.y, 0.058]} rotation={[0, 0, stone.angle + Math.PI / 2]}>
           <mesh castShadow>
-            <icosahedronGeometry args={[0.033, 1]} />
-            <meshPhysicalMaterial color="#f7f7f4" metalness={0.03} roughness={0.075} transmission={0.12} thickness={0.08} ior={2.05} clearcoat={1} clearcoatRoughness={0.04} />
+            <octahedronGeometry args={[stone.size, 0]} />
+            <meshPhysicalMaterial color="#f7f7f4" metalness={0.02} roughness={0.065} transmission={0.1} thickness={0.06} ior={2.05} clearcoat={1} clearcoatRoughness={0.04} />
           </mesh>
-          <mesh position={[0, 0, -0.014]}>
-            <torusGeometry args={[0.036, 0.0045, 6, 20]} />
+          <mesh position={[0, 0, -0.01]}>
+            <torusGeometry args={[stone.size * 1.09, 0.003, 6, 18]} />
             <meshStandardMaterial color="#f1f0eb" metalness={0.95} roughness={0.18} />
           </mesh>
         </group>
       ))}
 
-      <mesh position={[0, 1.105, 0.018]} castShadow>
-        <torusGeometry args={[0.334, 0.026, 12, 80]} />
-        <meshStandardMaterial color="#d8b677" metalness={1} roughness={0.16} />
-      </mesh>
-      <mesh position={[0, 1.105, -0.015]} castShadow>
-        <torusGeometry args={[0.285, 0.021, 10, 64]} />
+      <mesh position={[0, 1.105, -0.045]} castShadow>
+        <torusGeometry args={[0.278, 0.019, 10, 72]} />
         <meshStandardMaterial color="#b98c4c" metalness={1} roughness={0.2} />
       </mesh>
       {galleryAngles.map((angle) => (
         <mesh
           key={`petal-${angle}`}
-          position={[Math.cos(angle) * 0.315, 1.105 + Math.sin(angle) * 0.315, 0.07]}
+          position={[Math.cos(angle) * 0.335, 1.105 + Math.sin(angle) * 0.335, 0.052]}
           rotation={[0, 0, angle + Math.PI / 2]}
-          scale={[0.061, 0.137, 0.026]}
+          scale={[0.054, 0.122, 0.029]}
           castShadow
         >
-          <sphereGeometry args={[1, 20, 12]} />
+          <sphereGeometry args={[1, 24, 14]} />
           <meshStandardMaterial color="#d6b16d" metalness={0.98} roughness={0.18} />
         </mesh>
       ))}
       {galleryAngles.map((angle) => <GalleryClaw key={`claw-${angle}`} angle={angle} />)}
-      <mesh geometry={diamondGeometry} position={[0, 1.105, 0.085]} castShadow>
+      <mesh geometry={diamondGeometry} position={[0, 1.105, 0.105]} castShadow>
         <meshPhysicalMaterial color="#fffdf8" metalness={0.015} roughness={0.035} transmission={0.22} thickness={0.48} ior={2.22} clearcoat={1} clearcoatRoughness={0.025} side={THREE.DoubleSide} flatShading envMapIntensity={1.9} />
       </mesh>
     </group>
@@ -308,7 +305,7 @@ function Scene({ mode, progressRef, anchorX, controlsRef }: RingCanvasProps) {
 export default function RingCanvas({ mode, progressRef, anchorX = 0, controlsRef, label }: RingCanvasProps) {
   const cameraPosition: [number, number, number] = mode === "story" ? [anchorX, 0.16, 5.8] : [0, 0.25, 5.4];
   return (
-    <div className="ring-canvas" role="img" aria-label={label ?? "A two-tone concept ring with a sculpted petal setting"}>
+    <div className="ring-canvas" role="img" aria-label={label ?? "A two-tone concept ring with a raised petal setting, faceted center stone and one pavé-style shoulder"}>
       <Canvas
         camera={{ position: cameraPosition, fov: 32, near: 0.1, far: 60 }}
         dpr={[1, 1.5]}
